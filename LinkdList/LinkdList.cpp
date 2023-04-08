@@ -1,8 +1,8 @@
 #include "LinkdList.h"
 
 LinkdList::LinkdList(){
-    endNodeForAdd = &firstNode;
     firstNode = nullptr;
+    endNode = firstNode;
     countNode = 0;
 }
 
@@ -22,9 +22,18 @@ bool LinkdList::addLinkdListNode(int content){
     try{
         LinkdList::Node *addNode = new LinkdList::Node;
 
-        addNode->content = content;             // content 저장
-        *endNodeForAdd = addNode;               // 현재 마지막 노드에 추가한 노드를 넣어준다.
-        endNodeForAdd = &(addNode->nextNode);   // 추가한 노드의 nextNode요소의 주소를 넣어준다. (항상 마지막 노드의 다음 노드를 가리킴)
+		// countNode가 0이 아니면 prevNode에 이전 노드의 주소를 넣는다.
+        if (countNode){            
+            addNode->prevNode = endNode->nextNode - sizeof(LinkdList::Node *);
+        	endNode->nextNode = addNode;            // 현재 마지막 노드의 nextNode에 추가한 노드를 넣어준다.
+		}
+		//현재 노드가 없으면
+		else{
+			firstNode = addNode;					// firstNode를 업데이트 해준다.
+			endNode = addNode;						// endNode에 addNode를 넣어준다.
+		}
+        addNode->content = content;             	// content 저장
+		endNode = addNode;							// endNode에 추가한 노드를 넣어 마지막 노드를 업데이트 한다.
 
         countNode++;
 
@@ -38,14 +47,23 @@ bool LinkdList::addLinkdListNode(int content){
 bool LinkdList::deletLinkdList_index(int delIndex)
 {
     try{
-        if(!firstNode)
+        if(!firstNode || delIndex > countNode)
             return false;
 
         LinkdList::Node * delNode = firstNode;
 
-        for(int i = 0 ; i <= delIndex; i++)
+        for(int i = 1 ; i <= delIndex; i++)
             delNode = delNode->nextNode;
-        
+
+        if(!delNode->nextNode)									
+            endNode = delNode->prevNode;						// 마지막 노드면 마지막 노드를 가리키는 변수를  업데이트 한다.
+		else if(firstNode == delNode)
+			firstNode = delNode->nextNode;						// 첫 노드면 첫 노드를 가리키는 변수를 업데이트 한다.
+		else{
+			delNode->prevNode->nextNode = delNode->nextNode;	// 앞 순번의 노드의 다음노드를 가리키는 멤버를 지우는 노드의 다음 노드로 업데이트한다.
+			delNode->nextNode->prevNode = delNode->prevNode;	// 위의 연산의 반대
+		} 
+
         delete(delNode);
 
         countNode--;
@@ -57,11 +75,46 @@ bool LinkdList::deletLinkdList_index(int delIndex)
     }
 }
 
+bool LinkdList::deletLinkdList_content(int delContent)
+{
+    try{
+        if (!firstNode)
+            return false;
+
+        LinkdList::Node * delNode = firstNode, *prevDelNode = firstNode;
+        int i;
+
+        for (i = 1; i < delContent; i++){
+            if (delNode->content == delContent)
+                break;
+            prevDelNode = delNode;
+            delNode = delNode->nextNode;
+        }
+
+        if(!delNode->nextNode)									
+            endNode = delNode->prevNode;						// 마지막 노드면 마지막 노드를 가리키는 변수를  업데이트 한다.
+		else if(firstNode == delNode)
+			firstNode = delNode->nextNode;						// 첫 노드면 첫 노드를 가리키는 변수를 업데이트 한다.
+		else{
+			delNode->prevNode->nextNode = delNode->nextNode;	// 앞 순번의 노드의 다음노드를 가리키는 멤버를 지우는 노드의 다음 노드로 업데이트한다.
+			delNode->nextNode->prevNode = delNode->prevNode;	// 위의 연산의 반대
+		} 
+        
+        prevDelNode->nextNode = delNode->nextNode;      // 서로의 노드를 이어준다.
+        delete(delNode);
+        countNode--;
+        return true;
+    }
+    catch (exception ex){
+        return false;
+    }
+}
+
 int LinkdList::searchLinkdList_index(int searchIndex)
 {
     if (countNode < searchIndex)
     {
-        cout << "인덱스가 node값보다 큽니다.";
+        cout << "인덱스가 node값보다 큽니다." << endl;
         return 0;
     }
 
