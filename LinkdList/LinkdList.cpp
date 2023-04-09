@@ -10,30 +10,54 @@ LinkdList::~LinkdList(){
     LinkdList::Node * nextLinkdList;
     LinkdList::Node * curNode = firstNode;
 
-    while (curNode)
-    {
+    for(int i = 0; i < countNode; i++){
         nextLinkdList = curNode->nextNode;
         delete(curNode);
         curNode = nextLinkdList;
     }
 }
+void LinkdList::addNodeFirstOrEnd(int addIndex, int addContent, LinkdList::Node * addNode){
 
-bool LinkdList::addLinkdListNode(int content){
+	//현재 노드가 없으면
+	if (!countNode){
+		firstNode = addNode;					// firstNode를 업데이트 해준다.
+		endNode = addNode;						// endNode에 addNode를 넣어준다.
+	}
+	// 마지막에 노드를 추가
+	else if (addIndex > countNode){            
+		addNode->prevNode = endNode->nextNode - sizeof(LinkdList::Node *);
+		endNode->nextNode = addNode;            // 현재 마지막 노드의 nextNode에 추가한 노드를 넣어준다.
+		endNode = addNode;
+	}
+	// 맨 앞에 노드를 추가
+	else {
+		firstNode->prevNode = addNode;
+		addNode->nextNode = firstNode;
+		firstNode = addNode;
+	}
+	
+}
+
+bool LinkdList::addLinkdListNode(int addIndex, int addContent){
+	if (addIndex < 1)
+		return false;
     try{
-        LinkdList::Node *addNode = new LinkdList::Node;
+        LinkdList::Node * addNode = new LinkdList::Node;
+		LinkdList::Node * tempNode = firstNode;
 
-		// countNode가 0이 아니면 prevNode에 이전 노드의 주소를 넣는다.
-        if (countNode){            
-            addNode->prevNode = endNode->nextNode - sizeof(LinkdList::Node *);
-        	endNode->nextNode = addNode;            // 현재 마지막 노드의 nextNode에 추가한 노드를 넣어준다.
-		}
-		//현재 노드가 없으면
+		addNode->content = addContent;
+
+		for(int i = 1; i <= countNode && i <= addIndex; i++)
+			tempNode = tempNode->nextNode;		
+
+		if(addIndex > countNode || addIndex == 1)
+			addNodeFirstOrEnd(addIndex, addContent, addNode);
 		else{
-			firstNode = addNode;					// firstNode를 업데이트 해준다.
-			endNode = addNode;						// endNode에 addNode를 넣어준다.
+			addNode->prevNode = tempNode->prevNode;
+			tempNode->prevNode->nextNode = addNode;
+			addNode->nextNode = tempNode;
+			tempNode->prevNode = addNode;
 		}
-        addNode->content = content;             	// content 저장
-		endNode = addNode;							// endNode에 추가한 노드를 넣어 마지막 노드를 업데이트 한다.
 
         countNode++;
 
@@ -81,17 +105,21 @@ bool LinkdList::deletLinkdList_content(int delContent)
         if (!firstNode)
             return false;
 
-        LinkdList::Node * delNode = firstNode, *prevDelNode = firstNode;
         int i;
+        LinkdList::Node * delNode = firstNode;
+		LinkdList::Node * prevDelNode = firstNode;
 
-        for (i = 1; i < delContent; i++){
+        for (i = 1; i <= countNode; i++){
             if (delNode->content == delContent)
                 break;
             prevDelNode = delNode;
             delNode = delNode->nextNode;
         }
 
-        if(!delNode->nextNode)									
+		if (i > countNode){
+			return false;
+		}
+        else if(!delNode->nextNode)									
             endNode = delNode->prevNode;						// 마지막 노드면 마지막 노드를 가리키는 변수를  업데이트 한다.
 		else if(firstNode == delNode)
 			firstNode = delNode->nextNode;						// 첫 노드면 첫 노드를 가리키는 변수를 업데이트 한다.
@@ -110,7 +138,7 @@ bool LinkdList::deletLinkdList_content(int delContent)
     }
 }
 
-int LinkdList::searchLinkdList_index(int searchIndex)
+int LinkdList::searchLinkdList_index(int searchIndex, int * searchCotent)
 {
     if (countNode < searchIndex)
     {
@@ -131,7 +159,7 @@ int LinkdList::searchLinkdList_index(int searchIndex)
 int LinkdList::searchLinkdList_content(int searchContent){
     LinkdList::Node *tempNode = firstNode;
 
-    for(int i = 1; tempNode; i++)
+    for(int i = 1; i <= countNode; i++)
     {
         if (tempNode->content == searchContent){
             std::cout << "찾으시는 " << searchContent << "값은 " << i << "번째에 있습니다." << std::endl;
@@ -145,7 +173,7 @@ int LinkdList::searchLinkdList_content(int searchContent){
 
 void LinkdList::showAllData(){
     LinkdList::Node *tempNode = firstNode;
-    for(int i = 1; tempNode; i++)
+    for(int i = 1; i <= countNode; i++)
     {
         std::cout << i << "번 데이터는 == " << tempNode->content << std::endl;
         tempNode = tempNode->nextNode;
