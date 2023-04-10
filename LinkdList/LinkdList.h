@@ -19,12 +19,11 @@ public:
     LinkdList::Node * firstNode;
     LinkdList::Node * endNode;
 
-    int countNode;
-
     LinkdList();
 
     ~LinkdList();
 
+// 리스트 처리 함수들
     bool initLinkdList();
     
     bool addLinkdListNode(unsigned int addIndex, int addContent = 0);
@@ -39,8 +38,14 @@ public:
 
     int replaceNodeContent(unsigned int replaceIndex, int replaceContent);
 
+// 리스트 정보와 관련된 함수들
+    int getCount(){
+        return countNode;
+    }
+
 private:
     // addLinkdListNode function
     void addNodeFirstOrEnd(int addIndex, int addContent, LinkdList::Node * addNode);
+    int countNode;
 };
 #endif

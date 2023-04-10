@@ -17,8 +17,8 @@ int main()
     temp.showAllData();
     temp.deletLinkdList_content(11);
     temp.showAllData();
-    temp.initLinkdList();
-    temp.showAllData();
+
+    std::cout << "\n\n\n" << temp.getCount();
 
     return 0;
 }
