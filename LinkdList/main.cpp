@@ -11,7 +11,13 @@ int main()
     temp.addLinkdListNode(1,11);
 
     temp.searchLinkdList_content(10);
+    temp.searchLinkdList_index(100);
     temp.deletLinkdList_content(10);
+    temp.replaceNodeContent(110,10000);
+    temp.showAllData();
+    temp.deletLinkdList_content(11);
+    temp.showAllData();
+    temp.initLinkdList();
     temp.showAllData();
 
     return 0;

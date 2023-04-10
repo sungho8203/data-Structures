@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#define FOR_FIRST_NUMBER 2 // for문에서 index변수인 i의 초기화 값
+
 using namespace std;
 
 class LinkdList{
@@ -23,15 +25,19 @@ public:
 
     ~LinkdList();
 
-    bool addLinkdListNode(int addIndex, int addContent = 0);
+    bool initLinkdList();
+    
+    bool addLinkdListNode(unsigned int addIndex, int addContent = 0);
 
-    bool deletLinkdList_index(int delIndex);
+    bool deletLinkdList_index(unsigned int delIndex);
     bool deletLinkdList_content(int delContent);
 
-    int searchLinkdList_index(int searchIndex, int *searchContent);
+    int searchLinkdList_index(unsigned int searchIndex);
     int searchLinkdList_content(int searchContent);
     
     void showAllData();
+
+    int replaceNodeContent(unsigned int replaceIndex, int replaceContent);
 
 private:
     // addLinkdListNode function
