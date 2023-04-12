@@ -9,4 +9,4 @@ Stack.o :
 	g++ -c Stack.cpp
 
 clean :
-	rm -rf main.out Stack.dSYM Stack
+	rm -rf main.out *.dSYM Stack main
