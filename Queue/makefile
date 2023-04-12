@@ -1,4 +1,4 @@
-dataStruct = Stack
+dataStruct = Queue
 
 all : main.o $(dataStruct).o
 	g++ main.o $(dataStruct).o -o main.out
