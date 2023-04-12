@@ -10,12 +10,27 @@ Stack::~Stack(){
         this->popStack();
 }
 
+bool Stack::initStack(){
+    try{
+        while (countNode)
+            this->popStack();
+
+        cout << "success init" << endl;
+
+        return true;
+    }
+    catch(int ex){
+        cout << "init fail" << endl;
+        return false;
+    }
+}
+
 bool Stack::pushStack(int pushContent){
     try{
         Stack::Node * addNode = new Stack::Node;
         
         addNode->content = pushContent;
-        addNode->prevNode = topNode;
+        addNode->underNode = topNode;
         topNode = addNode;
 
         countNode++;
@@ -29,7 +44,10 @@ bool Stack::pushStack(int pushContent){
 
 int Stack::popStack(){
     try{
-        Stack::Node * nextTopNode = topNode->prevNode;
+        if (countNode <= 0)
+            throw string("노드가 없음");
+
+        Stack::Node * nextTopNode = topNode->underNode;
         int returnValue = topNode->content;
 
         delete(topNode);
@@ -40,17 +58,31 @@ int Stack::popStack(){
 
         return returnValue;
     }
-    catch(exception ex){
-        cout << "예외 상황 바생" << endl;
+    catch(string ex){
+        cout << ex << endl;
         return 0;
     }
 }
 
 bool Stack::showAllData(){
     try{
+        Stack::Node * tempNode = topNode;
+
         cout << "\n\n=============================" << endl;
 
+        if(!countNode){
+            std::cout << "데이터가 없습니다." << std::endl;
+            cout << "=============================\n" << endl;
+            return false;
+        }
+
+        for(int i = 1; i <= countNode; i++){
+            cout << "위에서 부터 " << i << "번째 값은 " << tempNode->content << endl;
+            tempNode = tempNode->underNode;
+        }
+
         cout << "=============================\n\n" << endl;
+        return true;
     }
     catch(exception ex){
         return false;

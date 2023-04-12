@@ -8,7 +8,7 @@ class Stack{
 public:
     struct Node{
         int content;
-        Stack::Node *prevNode;
+        Stack::Node *underNode;
     };
 
     Stack::Node * topNode;
@@ -16,11 +16,14 @@ public:
     Stack();
     ~Stack();
 
+    bool initStack();
+
     bool pushStack(int pushContent);
 
     int popStack();
 
     bool showAllData();
+
     int getLength(){
         return countNode;
     };
