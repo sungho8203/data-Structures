@@ -9,4 +9,4 @@ LinkdList.o :
 	g++ -c LinkdList.cpp
 
 clean :
-	rm -rf *.out LinkdList LinkdList.dSYM
+	rm -rf *.out LinkdList LinkdList.dSYM *.o
