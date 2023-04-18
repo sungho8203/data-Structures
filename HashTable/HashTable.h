@@ -10,11 +10,11 @@ class CHashTable{
 public:
     struct Content{
         int key;
-        char * value;
+        string * value;
     };
 
     struct Node{
-        Content cont;
+        Content content;
         Node * nextNode;
     };
     
@@ -23,7 +23,9 @@ public:
     CHashTable();
     ~CHashTable();
 
-    bool addContent(int key, char * value);
+    bool addContent(int key, string value);
+
+    bool deleteContent(int key);
 
 private:
 };
