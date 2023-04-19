@@ -55,20 +55,28 @@ bool CHashTable::addContent(int key, string value){
 bool CHashTable::deleteContent(int key){
     try{
         CHashTable::Node * nextNode = HASH[key % COUNT_HASH];
+        CHashTable::Node ** ptrNextNodeElement = (HASH + (key % COUNT_HASH));
 
+        if (nextNode == nullptr)
+            throw "키가 없습니다.";
+        
         while(nextNode->content.key != key){
-            if (nextNode != nullptr)
+            if (nextNode == nullptr)
                 throw "키를 찾을 수 없습니다.";
+            ptrNextNodeElement = &(nextNode->nextNode);
             nextNode = nextNode->nextNode;
         }
+
         cout << key << "의 값은 \"" << *(nextNode->content.value) << "\" 이고 삭제 합니다." << endl;
+
+        *ptrNextNodeElement = nextNode->nextNode;
 
         delete(nextNode->content.value);
         delete(nextNode);
 
         return true;
     }
-    catch(string ex){
+    catch(const char * ex){
         cout << ex << endl;
         return false;
     }
