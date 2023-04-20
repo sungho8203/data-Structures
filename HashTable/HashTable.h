@@ -27,5 +27,7 @@ public:
 
     bool deleteContent(int key);
 
+    string searchContent(int key);
 private:
+    bool changeNextNode(CHashTable::Node ** nextNode);
 };

@@ -42,7 +42,7 @@ bool CHashTable::addContent(int key, string value){
         }
         return true;
     }
-    catch(string ex){
+    catch(const char * ex){
         cout << ex << endl;
         return false;
     }
@@ -61,10 +61,11 @@ bool CHashTable::deleteContent(int key){
             throw "키가 없습니다.";
         
         while(nextNode->content.key != key){
-            if (nextNode == nullptr)
-                throw "키를 찾을 수 없습니다.";
             ptrNextNodeElement = &(nextNode->nextNode);
             nextNode = nextNode->nextNode;
+
+            if (nextNode == nullptr)
+                throw "키를 찾을 수 없습니다.";
         }
 
         cout << key << "의 값은 \"" << *(nextNode->content.value) << "\" 이고 삭제 합니다." << endl;
@@ -82,5 +83,31 @@ bool CHashTable::deleteContent(int key){
     }
     catch(exception ex){
         return false;
+    }
+}
+
+
+bool CHashTable::changeNextNode(CHashTable::Node ** nextNode){
+    *nextNode = (*nextNode)->nextNode;
+    return true;
+}
+
+string CHashTable::searchContent(int key){
+    try{
+        CHashTable::Node * nextNode = HASH[key % COUNT_HASH];
+
+        do{
+            if(nextNode == nullptr)
+                throw "키가 맞는 노드가 없습니다.";
+        }while(nextNode->content.key != key && changeNextNode(&nextNode));   // and 논리연산자 순서 왼쪽부터, and 연산자를 이용해서 왼쪽 연산자가 True일때 다음 노드로 이동한다.
+
+        return *(nextNode->content.value);
+    }
+    catch(const char * ex){
+        cout << ex << endl;
+        return "";
+    }
+    catch(exception ex){
+        return "";
     }
 }
