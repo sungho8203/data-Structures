@@ -23,11 +23,21 @@ public:
     CHashTable();
     ~CHashTable();
 
-    bool addContent(int key, string value);
+    bool addNewNode(int key, string value);
 
     bool deleteContent(int key);
 
     string searchContent(int key);
+
+    bool showAllContnet();
+
+    int getCountNode();
+
+    bool changeCotentValue(int key, string value);
 private:
+    int countNode;
+
     bool changeNextNode(CHashTable::Node ** nextNode);
+
+    CHashTable::Node * searchNode(int key);
 };
