@@ -1,4 +1,4 @@
-#include "HashTable.h"
+#include <HashTable.h>
 
 CHashTable::CHashTable(): HASH() {
     countNode = 0;
