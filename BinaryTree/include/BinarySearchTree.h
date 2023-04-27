@@ -7,7 +7,9 @@ using namespace std;
 class BinaryTree{
 public :
     struct Content{
-        int value;
+        int key;
+        string value;
+        int level;
     };
     struct Node{
         Content content;
@@ -20,10 +22,13 @@ public :
     BinaryTree();
     ~BinaryTree();
 
-    bool addValue(int valjue);
+    bool addValue(int key, string value);
 
-    bool searchValue(int value);
+    string searchValue(int key);
+
+    bool deleteTree();
 
 private :
-    BinaryTree::Node * searchNode(BinaryTree::Node * node, int value);
+    BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
+    bool deleteSubTree(BinaryTree::Node * node);
 };
