@@ -5,7 +5,7 @@ BinaryTree::BinaryTree(){
 }
 
 BinaryTree::~BinaryTree(){
-    deleteSubTree(rootNode);
+    this->deleteTree();
 }
 
 string BinaryTree::searchValue(int key){
@@ -47,7 +47,7 @@ bool BinaryTree::addValue(int key, string value){
 
 bool BinaryTree::deleteTree(){
     try{
-        deleteSubTree(rootNode);
+        treeTraversal(rootNode, &BinaryTree::deleteNode);
         rootNode = nullptr;
         return true;
     }
@@ -59,17 +59,17 @@ bool BinaryTree::deleteTree(){
 
 #pragma region Private
 
-bool BinaryTree::deleteSubTree(BinaryTree::Node * node){
+bool BinaryTree::treeTraversal(BinaryTree::Node * node, void (BinaryTree::*operateNode)(BinaryTree::Node * )){
     if (node == nullptr)
         return false;
 
     if (node->leftNode != nullptr)
-        deleteSubTree(node->leftNode);
+        treeTraversal(node->leftNode, operateNode);
 
     if (node->rigthNode != nullptr)
-        deleteSubTree(node->rigthNode);
+        treeTraversal(node->rigthNode, operateNode);
 
-    delete(node);
+    (this->*operateNode)(node);
 
     return true;
 }

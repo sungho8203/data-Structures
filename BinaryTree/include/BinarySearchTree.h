@@ -29,6 +29,11 @@ public :
     bool deleteTree();
 
 private :
-    BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
-    bool deleteSubTree(BinaryTree::Node * node);
+    static BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
+    
+    bool treeTraversal(BinaryTree::Node * node, void (BinaryTree::*operateNode)(BinaryTree::Node * ));
+
+    void deleteNode(BinaryTree::Node * node){
+        delete(node);
+    }
 };
