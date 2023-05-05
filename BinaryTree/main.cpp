@@ -25,6 +25,8 @@ int main(){
     }
     cout << "==================================\n\n" << endl;
 
+    temp.showAllData();
+
     temp.deleteTree();
 
     cout << temp.searchValue(8) << endl;

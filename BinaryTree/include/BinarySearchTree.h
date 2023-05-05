@@ -28,6 +28,8 @@ public :
 
     bool deleteTree();
 
+    bool showAllData();
+
 private :
     static BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
     
@@ -35,5 +37,9 @@ private :
 
     void deleteNode(BinaryTree::Node * node){
         delete(node);
+    }
+
+    void showNodeValue(BinaryTree::Node * node){
+        cout << node->content.value << endl;
     }
 };

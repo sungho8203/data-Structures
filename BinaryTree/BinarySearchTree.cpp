@@ -56,6 +56,21 @@ bool BinaryTree::deleteTree(){
     }
 }
 
+bool BinaryTree::showAllData(){
+    try{
+        cout << "\n\n==================================" << endl;
+        cout << "Show All Data Function 입니다." << endl;
+
+        treeTraversal(rootNode, &BinaryTree::showNodeValue);
+        
+        cout << "==================================\n\n" << endl;
+        return true;
+    }
+    catch(exception ex){
+        return false;
+    }
+}
+
 
 #pragma region Private
 
