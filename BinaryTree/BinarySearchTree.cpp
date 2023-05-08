@@ -11,6 +11,7 @@ BinaryTree::~BinaryTree(){
 string BinaryTree::searchValue(int key){
     try{
         BinaryTree::Node ** tempNode = searchNode(&rootNode, key);
+
         if(*tempNode == nullptr)
             return "데이터가 없습니다.";
 
@@ -33,7 +34,8 @@ bool BinaryTree::addValue(int key, string value){
 
         (*addNode)->content.key = key;
         (*addNode)->content.value = value;
-
+        (*addNode)->level = searchNodeLevel;
+        
         return true;
     }
     catch(const char * ex){
@@ -94,17 +96,17 @@ BinaryTree::Node ** BinaryTree::searchNode(BinaryTree::Node ** node, int key){
     BinaryTree::Node ** resultNode = node;
     int nodeKey;
 
-    if (*node == nullptr)
+    if (*node == nullptr || (nodeKey = (*node)->content.key) == key){
+        searchNodeLevel = 0;
         return node;
-
-    nodeKey = (*node)->content.key;
+    }
 
     if (nodeKey > key)
         resultNode = searchNode(&(*node)->leftNode, key);
     else if (nodeKey < key)
         resultNode = searchNode(&(*node)->rigthNode, key);
-    else   
-        resultNode = node;
+
+    searchNodeLevel++;
     
     return resultNode;
 }

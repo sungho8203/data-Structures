@@ -9,12 +9,14 @@ public :
     struct Content{
         int key;
         string value;
-        int level;
     };
+
     struct Node{
         Content content;
         BinaryTree::Node * leftNode;
         BinaryTree::Node * rigthNode;
+
+        int level;
     };
 
     BinaryTree::Node * rootNode;
@@ -31,7 +33,8 @@ public :
     bool showAllData();
 
 private :
-    static BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
+    int searchNodeLevel;
+    BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
     
     bool treeTraversal(BinaryTree::Node * node, void (BinaryTree::*operateNode)(BinaryTree::Node * ));
 
@@ -40,6 +43,6 @@ private :
     }
 
     void showNodeValue(BinaryTree::Node * node){
-        cout << node->content.value << endl;
+        cout << "값 : " << node->content.value << "\t레벨 : " << node->level << endl;
     }
 };
