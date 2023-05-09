@@ -35,7 +35,7 @@ bool BinaryTree::addValue(int key, string value){
         (*addNode)->content.key = key;
         (*addNode)->content.value = value;
         (*addNode)->level = searchNodeLevel;
-        
+
         return true;
     }
     catch(const char * ex){
@@ -60,12 +60,12 @@ bool BinaryTree::deleteTree(){
 
 bool BinaryTree::showAllData(){
     try{
-        cout << "\n\n==================================" << endl;
+        cout << "\n\n=========================================" << endl;
         cout << "Show All Data Function 입니다." << endl;
 
         treeTraversal(rootNode, &BinaryTree::showNodeValue);
         
-        cout << "==================================\n\n" << endl;
+        cout << "=========================================\n\n" << endl;
         return true;
     }
     catch(exception ex){

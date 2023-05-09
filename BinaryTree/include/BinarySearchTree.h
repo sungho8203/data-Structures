@@ -43,6 +43,6 @@ private :
     }
 
     void showNodeValue(BinaryTree::Node * node){
-        cout << "값 : " << node->content.value << "\t레벨 : " << node->level << endl;
+        cout << "값 : " << node->content.value << "\t레벨 : " << node->level << "\tkey : " << node->content.key << endl;
     }
 };
