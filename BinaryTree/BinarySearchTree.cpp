@@ -60,6 +60,19 @@ bool BinaryTree::deleteTree(){
     }
 }
 
+bool BinaryTree::deleteSubTree(int key) {
+    try {
+        BinaryTree::Node** tempNode = searchNode(&rootNode, key);
+        treeTraversal(*tempNode, &BinaryTree::deleteNode);
+        *tempNode = nullptr;
+
+        return true;
+    }
+    catch (exception ex) {
+        return false;
+    }
+}
+
 bool BinaryTree::showAllData(){
     try{
         cout << "\n\n==================================" << endl;
