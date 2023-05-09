@@ -37,6 +37,8 @@ int main(){
     }
     cout << "==================================\n\n" << endl;
 
+    temp.deleteSubTree(1);
+
     temp.showAllData();
 
     temp.deleteTree();
