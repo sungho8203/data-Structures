@@ -36,6 +36,8 @@ bool BinaryTree::addValue(int key, string value){
         (*addNode)->content.value = value;
         (*addNode)->level = searchNodeLevel;
 
+        (*addNode)->leftNode = (*addNode)->rigthNode = nullptr;
+
         return true;
     }
     catch(const char * ex){
@@ -54,6 +56,19 @@ bool BinaryTree::deleteTree(){
         return true;
     }
     catch(exception ex){
+        return false;
+    }
+}
+
+bool BinaryTree::deleteSubTree(int key) {
+    try {
+        BinaryTree::Node** tempNode = searchNode(&rootNode, key);
+        treeTraversal(*tempNode, &BinaryTree::deleteNode);
+        *tempNode = nullptr;
+
+        return true;
+    }
+    catch (exception ex) {
         return false;
     }
 }

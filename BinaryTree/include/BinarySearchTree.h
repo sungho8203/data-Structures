@@ -29,6 +29,7 @@ public :
     string searchValue(int key);
 
     bool deleteTree();
+    bool deleteSubTree(int key);
 
     bool showAllData();
 
