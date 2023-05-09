@@ -35,7 +35,9 @@ bool BinaryTree::addValue(int key, string value){
         (*addNode)->content.key = key;
         (*addNode)->content.value = value;
         (*addNode)->level = searchNodeLevel;
-        
+
+        (*addNode)->leftNode = (*addNode)->rigthNode = nullptr;
+
         return true;
     }
     catch(const char * ex){
