@@ -2,6 +2,7 @@
 
 BinaryTree::BinaryTree(){
     this->rootNode = nullptr;
+    this->searchNodeLevel = 0;
 }
 
 BinaryTree::~BinaryTree(){
@@ -35,9 +36,9 @@ bool BinaryTree::addValue(int key, string value){
         (*addNode)->content.key = key;
         (*addNode)->content.value = value;
         (*addNode)->level = searchNodeLevel;
+        (*addNode)->route = searchNodeRoute;
 
         (*addNode)->leftNode = (*addNode)->rigthNode = nullptr;
-
         return true;
     }
     catch(const char * ex){
@@ -75,12 +76,12 @@ bool BinaryTree::deleteSubTree(int key) {
 
 bool BinaryTree::showAllData(){
     try{
-        cout << "\n\n=========================================" << endl;
+        cout << "\n\n================================================" << endl;
         cout << "Show All Data Function 입니다." << endl;
 
         treeTraversal(rootNode, &BinaryTree::showNodeValue);
         
-        cout << "=========================================\n\n" << endl;
+        cout << "================================================\n\n" << endl;
         return true;
     }
     catch(exception ex){
@@ -106,8 +107,19 @@ bool BinaryTree::treeTraversal(BinaryTree::Node * node, void (BinaryTree::*opera
     return true;
 }
 
-
 BinaryTree::Node ** BinaryTree::searchNode(BinaryTree::Node ** node, int key){
+    BinaryTree::Node ** tempNode;
+    searchNodeRoute.clear();
+
+    tempNode = searchNode_run(node, key);
+
+    if (searchNodeRoute.empty())
+        searchNodeRoute = "Root Node";
+
+    return tempNode;
+}
+
+BinaryTree::Node ** BinaryTree::searchNode_run(BinaryTree::Node ** node, int key){
     BinaryTree::Node ** resultNode = node;
     int nodeKey;
 
@@ -116,10 +128,14 @@ BinaryTree::Node ** BinaryTree::searchNode(BinaryTree::Node ** node, int key){
         return node;
     }
 
-    if (nodeKey > key)
-        resultNode = searchNode(&(*node)->leftNode, key);
-    else if (nodeKey < key)
-        resultNode = searchNode(&(*node)->rigthNode, key);
+    if (nodeKey > key){
+        searchNodeRoute += "0";
+        resultNode = searchNode_run(&(*node)->leftNode, key);
+    }
+    else if (nodeKey < key){
+        searchNodeRoute += "1";
+        resultNode = searchNode_run(&(*node)->rigthNode, key);
+    }
 
     searchNodeLevel++;
     

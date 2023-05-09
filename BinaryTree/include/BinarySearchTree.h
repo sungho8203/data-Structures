@@ -17,6 +17,7 @@ public :
         BinaryTree::Node * rigthNode;
 
         int level;
+        string route;
     };
 
     BinaryTree::Node * rootNode;
@@ -35,7 +36,9 @@ public :
 
 private :
     int searchNodeLevel;
+    string searchNodeRoute;
     BinaryTree::Node ** searchNode(BinaryTree::Node ** node, int value);
+    BinaryTree::Node ** searchNode_run(BinaryTree::Node ** node, int value);
     
     bool treeTraversal(BinaryTree::Node * node, void (BinaryTree::*operateNode)(BinaryTree::Node * ));
 
@@ -44,6 +47,8 @@ private :
     }
 
     void showNodeValue(BinaryTree::Node * node){
-        cout << "값 : " << node->content.value << "\t레벨 : " << node->level << "\tkey : " << node->content.key << endl;
+        cout << "값 : " << node->content.value << "\t레벨 : " << node->level << "\tkey : ";
+        printf("%2d", node->content.key);   // key값이 한 글자면 탭이 이상해짐 (키 값이 너무 길어져도 문제가 될듯)
+        cout << "\troute : " << node->route << endl;
     }
 };
