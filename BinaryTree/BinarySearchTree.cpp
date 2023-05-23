@@ -9,7 +9,7 @@ BinaryTree::~BinaryTree(){
     this->deleteTree();
 }
 
-string BinaryTree::searchValue(int key){
+string BinaryTree::searchKey(int key){
     try{
         BinaryTree::Node ** tempNode = searchNode(&rootNode, key);
 

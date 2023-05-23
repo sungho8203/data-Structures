@@ -3,14 +3,14 @@
 int main(){
     BinaryTree temp;
 
-    cout << temp.searchValue(10) << endl;
+    cout << temp.searchKey(10) << endl;
 
-    temp.addValue(10, "이정빈");
-    cout << temp.searchValue(10) << endl;
+    temp.addValue(10, "문성호");
+    cout << temp.searchKey(10) << endl;
 
     temp.deleteTree();
 
-    cout << temp.searchValue(10) << endl;
+    cout << temp.searchKey(10) << endl;
 
     for(int i = 0; i < 11; i++){
         char tempStr[10] = "f0as";
@@ -30,13 +30,13 @@ int main(){
 
     cout << "\n\n==================================" << endl;
     for (int i = 0; i < 11; i++){
-        cout << temp.searchValue(i) << endl;
+        cout << temp.searchKey(i) << endl;
     }
     cout << "==================================\n\n" << endl;
 
     cout << "\n\n==================================" << endl;
     for (int i = -1; i > -11; i--){
-        cout << temp.searchValue(i) << endl;
+        cout << temp.searchKey(i) << endl;
     }
     cout << "==================================\n\n" << endl;
 
@@ -46,7 +46,7 @@ int main(){
 
     temp.deleteTree();
 
-    cout << temp.searchValue(8) << endl;
+    cout << temp.searchKey(8) << endl;
 
     return 0;
 }

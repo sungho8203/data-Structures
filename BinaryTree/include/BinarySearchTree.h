@@ -27,7 +27,7 @@ public :
 
     bool addValue(int key, string value);
 
-    string searchValue(int key);
+    string searchKey(int key);
 
     bool deleteTree();
     bool deleteSubTree(int key);
