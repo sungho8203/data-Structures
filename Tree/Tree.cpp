@@ -14,25 +14,22 @@ bool Tree::addCurNode(string value){
     return false;
 }
 
-bool Tree::changeNode(string routeStr){
+bool Tree::changeCurNode(string routeStr){
     try{
         vector<string> routeToken = this->split(routeStr, '/');
-        int tokenIndex = 0;
         Tree::Node * routeNode = curNode;
-        string throwStr = "는 없는 Node입니다.";
+        int routeIndex = 0;
 
-        if(routeToken[0] == "~"){
+        if (routeToken[0].compare("~") == 0){
+            routeIndex = 1;
             routeNode = rootNode;
-            tokenIndex++;   // 첫 번째 token이 ~이므로 다음 token으로 이동
         }
 
-        for(; tokenIndex < routeToken.size(); tokenIndex++){
-            vector<Tree::Content> childNode;
-            
-            if(1)
-                throw throwStr.insert(0, routeToken[tokenIndex]);
-            
-            routeNode = curNode; // 변경해
+        for(;routeIndex < routeToken.size();routeIndex++){
+            Tree::Node * tempNode = routeNode->childNode.find(routeToken[routeIndex]);
+            if (tempNode == nullptr)
+                throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
+            routeNode = tempNode;
         }
         return true;
     }
@@ -42,16 +39,71 @@ bool Tree::changeNode(string routeStr){
     }
 }
 
-#pragma region Protected
-    vector<string> Tree::split(string str, char delimiter){
-        vector<string> resultSplit;
-        stringstream strStream;
-        string splitTemp;
-
-        while(getline(strStream, splitTemp, delimiter))
-            resultSplit.push_back(splitTemp);
-
-        return resultSplit;
+bool Tree::deleteCurNode(){
+    try{
+        traversal(&Tree::deleteNode);
+        return true;
     }
+    catch(exception ex){
+        return false;
+    }
+}
+
+#pragma region Protected
+
+vector<string> Tree::split(string str, char delimiter){
+    vector<string> resultSplit;
+    stringstream strStream;
+    string splitTemp;
+
+    while(getline(strStream, splitTemp, delimiter))
+        resultSplit.push_back(splitTemp);
+
+    return resultSplit;
+}
+
+bool Tree::traversal(bool (Tree::*opFun)(Tree::Node * operand)){
+
+}
+
+bool Tree::deleteNode(Tree::Node * operand){
+    try{
+        delete (operand);
+        return true;
+    }
+    catch(exception ex){
+        return false;
+    }
+}
+
+#pragma endregion
+
+
+
+#pragma region List_Method_Specialization
+
+template<>
+Tree::Node* List<Tree::Node *>::find(string value){
+    List::Node * tempNode = this->firstNode;
+
+    while(tempNode != nullptr){
+        if (tempNode->content->value == value)
+            return tempNode->content;
+        tempNode = tempNode->nextNode;
+    }
+    return (Tree::Node *)nullptr;
+}
+
+template<>
+template<typename Func>
+bool List<Tree::Node *>::listTravel(Func traversal){
+    List::Node * tempNode = firstNode;
+
+    for(int i = 0; i < this->size; i++){
+        traversal(tempNode->content);
+        
+        tempNode = tempNode->nextNode;
+    }
+}
 
 #pragma endregion
