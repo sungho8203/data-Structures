@@ -75,7 +75,7 @@ public:
 
     template<typename Func>
     bool listTravel(Func fun){
-        fuc();
+        fun();
     }
 
     void clear(){

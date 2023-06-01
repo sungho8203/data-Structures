@@ -22,7 +22,7 @@ public :
     bool changeCurNode(string routeStr);
 
     bool deleteCurNode();
-    bool traversal(bool (Tree::* opFun)(Tree::Node * operand));
+    bool traversal(Tree::Node * nextNode);
 private:
     Tree::Node * rootNode;
     Tree::Node * curNode;

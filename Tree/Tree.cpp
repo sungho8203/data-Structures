@@ -31,6 +31,7 @@ bool Tree::changeCurNode(string routeStr){
                 throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
             routeNode = tempNode;
         }
+        curNode = routeNode;
         return true;
     }
     catch(const char * ex){
@@ -41,7 +42,7 @@ bool Tree::changeCurNode(string routeStr){
 
 bool Tree::deleteCurNode(){
     try{
-        traversal(&Tree::deleteNode);
+        traversal(curNode);
         return true;
     }
     catch(exception ex){
@@ -62,8 +63,10 @@ vector<string> Tree::split(string str, char delimiter){
     return resultSplit;
 }
 
-bool Tree::traversal(bool (Tree::*opFun)(Tree::Node * operand)){
-
+bool Tree::traversal(Tree::Node * nextNode){
+    return nextNode->childNode.listTravel([this](Tree::Node * node){
+        return traversal(node);
+    });
 }
 
 bool Tree::deleteNode(Tree::Node * operand){
@@ -101,7 +104,7 @@ bool List<Tree::Node *>::listTravel(Func traversal){
 
     for(int i = 0; i < this->size; i++){
         traversal(tempNode->content);
-        
+
         tempNode = tempNode->nextNode;
     }
 }
