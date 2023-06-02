@@ -7,10 +7,19 @@
 
 using namespace std;
 
+template<typename T, typename FUNC, typename OP_FUNC>
+class ChildNodeList : List<T>{
+public:
+    using List<T>::getSize;
+    T travelList(FUNC fun, T nextNode, OP_FUNC opFun){
+        *fun(nextNode, opFun);
+    }
+};
+
 class Tree{
 public :
     struct Node{
-        List<Tree::Node *> childNode;
+        ChildNodeList<Tree::Node *, bool (Tree::*)(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)), bool (Tree::*)(Tree::Node *)> childNode;
         string value;
     };
 
@@ -22,7 +31,8 @@ public :
     bool changeCurNode(string routeStr);
 
     bool deleteCurNode();
-    bool traversal(Tree::Node * nextNode);
+
+    bool traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *));
 private:
     Tree::Node * rootNode;
     Tree::Node * curNode;
@@ -31,11 +41,3 @@ protected:
     vector<string> split(string str, char delimiter);
     bool deleteNode(Tree::Node * operands);
 };
-
-
-template<>
-Tree::Node* List<Tree::Node *>::find(string value);
-
-template<>
-template<typename Func>
-bool List<Tree>::listTravel(Func fun);

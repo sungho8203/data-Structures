@@ -26,7 +26,7 @@ bool Tree::changeCurNode(string routeStr){
         }
 
         for(;routeIndex < routeToken.size();routeIndex++){
-            Tree::Node * tempNode = routeNode->childNode.find(routeToken[routeIndex]);
+            Tree::Node * tempNode;// = routeNode->childNode.find(routeToken[routeIndex]);
             if (tempNode == nullptr)
                 throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
             routeNode = tempNode;
@@ -42,12 +42,20 @@ bool Tree::changeCurNode(string routeStr){
 
 bool Tree::deleteCurNode(){
     try{
-        traversal(curNode);
+        traversal(curNode, &Tree::deleteNode);
         return true;
     }
     catch(exception ex){
         return false;
     }
+}
+
+bool Tree::traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)){
+    if(nextNode->childNode.getSize())
+        return (this->*opFunc)(nextNode);
+    else
+        nextNode->childNode.travelList(&Tree::traversal, nextNode, opFunc);
+
 }
 
 #pragma region Protected
@@ -61,12 +69,6 @@ vector<string> Tree::split(string str, char delimiter){
         resultSplit.push_back(splitTemp);
 
     return resultSplit;
-}
-
-bool Tree::traversal(Tree::Node * nextNode){
-    return nextNode->childNode.listTravel([this](Tree::Node * node){
-        return traversal(node);
-    });
 }
 
 bool Tree::deleteNode(Tree::Node * operand){
@@ -83,30 +85,6 @@ bool Tree::deleteNode(Tree::Node * operand){
 
 
 
-#pragma region List_Method_Specialization
-
-template<>
-Tree::Node* List<Tree::Node *>::find(string value){
-    List::Node * tempNode = this->firstNode;
-
-    while(tempNode != nullptr){
-        if (tempNode->content->value == value)
-            return tempNode->content;
-        tempNode = tempNode->nextNode;
-    }
-    return (Tree::Node *)nullptr;
-}
-
-template<>
-template<typename Func>
-bool List<Tree::Node *>::listTravel(Func traversal){
-    List::Node * tempNode = firstNode;
-
-    for(int i = 0; i < this->size; i++){
-        traversal(tempNode->content);
-
-        tempNode = tempNode->nextNode;
-    }
-}
+ #pragma region ChildNodeList_Method
 
 #pragma endregion

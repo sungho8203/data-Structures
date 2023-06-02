@@ -7,7 +7,6 @@ using namespace std;
 template<typename TYPE>
 class List{
 public:
-    int size;
 
     struct Node{
         TYPE content;
@@ -69,15 +68,6 @@ public:
         return false;
     }
 
-    TYPE find(string value){
-        // 문자열을 이용해서 특정 노드를 찾기 위한 함수 **(specialization을 해야됨)**
-    }
-
-    template<typename Func>
-    bool listTravel(Func fun){
-        fun();
-    }
-
     void clear(){
         Node * tempNode = firstNode;
         Node * nextNode = nullptr;
@@ -91,7 +81,15 @@ public:
         firstNode = nullptr;
         lastNode = &firstNode;
     }
-private:
+    
+    int getSize(){
+        return size;
+    }
+
+protected:
     Node ** lastNode;
     Node * firstNode;
+
+private:
+    int size;
 };
