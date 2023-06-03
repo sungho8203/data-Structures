@@ -80,6 +80,7 @@ public:
 
         firstNode = nullptr;
         lastNode = &firstNode;
+        size = 0;
     }
     
     int getSize(){
