@@ -51,7 +51,7 @@ public :
 
     ChildNodeList() : curIndexNode(List<Tree::Node *>::firstNode){}
 
-    Tree::Node * operator++(){
+    Tree::Node * nextCurNode(){
         if(curIndexNode == *List<Tree::Node *>::lastNode)
             curIndexNode = List<Tree::Node *>::firstNode;
         else

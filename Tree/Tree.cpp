@@ -26,16 +26,21 @@ bool Tree::changeCurNode(string routeStr){
         }
 
         for(;routeIndex < routeToken.size();routeIndex++){
-            Tree::Node * tempNode;// = routeNode->childNode.find(routeToken[routeIndex]);
+            Tree::Node * tempNode = curNode;
+            int i = 0;
             
             if (tempNode == nullptr)
                 throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
 
 
-            for(int i = 0; i < tempNode->childNode.getSize(); i++){
-                if ((++(tempNode->childNode))->value == routeToken[routeIndex])
-                    ;
+            for(i = 0; i < tempNode->childNode.getSize(); i++){
+                if ((tempNode->childNode.nextCurNode())->value == routeToken[routeIndex]){
+                    tempNode = tempNode->childNode.curIndexNode->content;
+                    break;
+                }
             }
+            if (i >= tempNode->childNode.getSize())
+                throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
 
             routeNode = tempNode;
         }
@@ -62,7 +67,7 @@ bool Tree::traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)){
     if(nextNode->childNode.getSize())
         return (this->*opFunc)(nextNode);
     for(int i = 0; i < nextNode->childNode.getSize(); i++){
-        traversal(++(nextNode->childNode), opFunc);
+        traversal(nextNode->childNode.nextCurNode(), opFunc);
     }
     return (this->*opFunc)(nextNode);
 }
