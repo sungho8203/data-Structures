@@ -57,7 +57,7 @@ public:
         return false;
     }
 
-    bool find(TYPE value){
+    virtual bool find(TYPE value){
         Node * tempNode = firstNode;
 
         while(tempNode != nullptr){

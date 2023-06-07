@@ -27,8 +27,16 @@ bool Tree::changeCurNode(string routeStr){
 
         for(;routeIndex < routeToken.size();routeIndex++){
             Tree::Node * tempNode;// = routeNode->childNode.find(routeToken[routeIndex]);
+            
             if (tempNode == nullptr)
                 throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
+
+
+            for(int i = 0; i < tempNode->childNode.getSize(); i++){
+                if ((++(tempNode->childNode))->value == routeToken[routeIndex])
+                    ;
+            }
+
             routeNode = tempNode;
         }
         curNode = routeNode;
@@ -53,9 +61,10 @@ bool Tree::deleteCurNode(){
 bool Tree::traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)){
     if(nextNode->childNode.getSize())
         return (this->*opFunc)(nextNode);
-    else
-        nextNode->childNode.travelList(&Tree::traversal, nextNode, opFunc);
-
+    for(int i = 0; i < nextNode->childNode.getSize(); i++){
+        traversal(++(nextNode->childNode), opFunc);
+    }
+    return (this->*opFunc)(nextNode);
 }
 
 #pragma region Protected

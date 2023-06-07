@@ -3,4 +3,6 @@
 #include <iostream>
 
 int main(){
+    Tree temp;
+    temp.deleteCurNode();
 }

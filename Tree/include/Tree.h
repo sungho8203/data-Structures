@@ -7,21 +7,23 @@
 
 using namespace std;
 
-template<typename T, typename FUNC, typename OP_FUNC>
-class ChildNodeList : List<T>{
+template<typename T>
+class ChildNodeList : public List<T>{
 public:
-    using List<T>::getSize;
-    T travelList(FUNC fun, T nextNode, OP_FUNC opFun){
-        *fun(nextNode, opFun);
+    typename List<T>::Node * curIndexNode;
+
+    ChildNodeList() : curIndexNode(List<T>::firstNode){}
+
+    T operator++(){
+    }
+
+    T find(string value){
     }
 };
 
 class Tree{
 public :
-    struct Node{
-        ChildNodeList<Tree::Node *, bool (Tree::*)(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)), bool (Tree::*)(Tree::Node *)> childNode;
-        string value;
-    };
+    struct Node;
 
     Tree();
     ~Tree();
@@ -40,4 +42,26 @@ private:
 protected:
     vector<string> split(string str, char delimiter);
     bool deleteNode(Tree::Node * operands);
+};
+
+template<>
+class ChildNodeList<Tree::Node *> : public List<Tree::Node *>{
+public :
+    List<Tree::Node *>::Node * curIndexNode;
+
+    ChildNodeList() : curIndexNode(List<Tree::Node *>::firstNode){}
+
+    Tree::Node * operator++(){
+        if(curIndexNode == *List<Tree::Node *>::lastNode)
+            curIndexNode = List<Tree::Node *>::firstNode;
+        else
+            curIndexNode = curIndexNode->nextNode;
+
+        return curIndexNode->content;
+    }
+};
+
+struct Tree::Node{
+    ChildNodeList<Tree::Node *> childNode;
+    string value;
 };
