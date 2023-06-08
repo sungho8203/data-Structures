@@ -12,12 +12,13 @@ class ChildNodeList : public List<T>{
 public:
     typename List<T>::Node * curIndexNode;
 
-    ChildNodeList() : curIndexNode(List<T>::firstNode){}
-
-    T operator++(){
+    ChildNodeList(){
     }
 
-    T find(string value){
+    void initCurNode(){
+    }
+
+    T nextCurNode(){
     }
 };
 
@@ -34,7 +35,7 @@ public :
 
     bool deleteCurNode();
 
-    bool traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *));
+    bool showCurNodeData();
 private:
     Tree::Node * rootNode;
     Tree::Node * curNode;
@@ -42,22 +43,33 @@ private:
 protected:
     vector<string> split(string str, char delimiter);
     bool deleteNode(Tree::Node * operands);
+    bool traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *));
+    bool findValueAtParamNode(Tree::Node * curNode_local, string value);
 };
+
 
 template<>
 class ChildNodeList<Tree::Node *> : public List<Tree::Node *>{
 public :
     List<Tree::Node *>::Node * curIndexNode;
 
-    ChildNodeList() : curIndexNode(List<Tree::Node *>::firstNode){}
+    ChildNodeList(){
+        initCurNode();
+    }
+
+    void initCurNode(){
+        curIndexNode = List<Tree::Node *>::firstNode;
+        }
 
     Tree::Node * nextCurNode(){
-        if(curIndexNode == *List<Tree::Node *>::lastNode)
+        List<Tree::Node *>::Node * tempNode = curIndexNode;
+        
+        if(curIndexNode == nullptr)
             curIndexNode = List<Tree::Node *>::firstNode;
         else
             curIndexNode = curIndexNode->nextNode;
 
-        return curIndexNode->content;
+        return tempNode->content;
     }
 };
 

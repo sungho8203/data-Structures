@@ -27,14 +27,20 @@ public:
             newNode->content = value;
             newNode->nextNode = nullptr;
 
-            *lastNode = newNode;
-            lastNode = &(newNode->nextNode);
-
-            this->size++;
+            if (firstNode == nullptr){
+                firstNode = newNode;
+                lastNode = &(newNode->nextNode);
+            }
+            else{            
+                *lastNode = newNode;
+                lastNode = &(newNode->nextNode);
+            }
+            
+            size++;
 
             return true;
         }
-        catch(const std::bad_alloc&){
+        catch(exception ex){
             return false;
         }
     }
