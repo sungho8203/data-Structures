@@ -62,12 +62,13 @@ public :
         }
 
     Tree::Node * nextCurNode(){
-        List<Tree::Node *>::Node * tempNode = curIndexNode;
+        List<Tree::Node *>::Node * tempNode;
         
         if(curIndexNode == nullptr)
-            curIndexNode = List<Tree::Node *>::firstNode;
-        else
-            curIndexNode = curIndexNode->nextNode;
+            curIndexNode = List<Tree::Node *>::firstNode;        
+        tempNode = curIndexNode;
+
+        curIndexNode = curIndexNode->nextNode;
 
         return tempNode->content;
     }
