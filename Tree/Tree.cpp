@@ -76,6 +76,10 @@ bool Tree::changeCurNode(string routeStr){
 bool Tree::deleteCurNode(){
     try{
         traversal(curNode, &Tree::deleteNode);
+
+        if (curNode == rootNode)
+            curNode = rootNode = nullptr;
+
         return true;
     }
     catch(exception ex){
@@ -87,14 +91,13 @@ bool Tree::showCurNodeData(){
     try{
         if (curNode == nullptr)
             throw "노드가 없습니다.";
-        cout << "현재 노드의 이름 : " << curNode->value << endl;
-        cout << curNode->childNode.getSize() << endl;
-        cout << "  하위 노드 - ";
+        cout << "현재 노드 : " << curNode->value << endl;
+        cout << "  하위 노드";
 
         curNode->childNode.initCurNode();
         for (int i = 0; i < curNode->childNode.getSize(); i++)
-            cout << curNode->childNode.nextCurNode()->value << " - ";
-        cout << endl;
+            cout << " - " << curNode->childNode.nextCurNode()->value;
+        cout << "\n  갯수는    = " << curNode->childNode.getSize() << "\n\n";
 
         return true;
     }
