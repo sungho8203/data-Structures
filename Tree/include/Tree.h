@@ -35,6 +35,7 @@ public :
 
     bool deleteCurNode();
 
+    bool showCurNodeChildNode();
     bool showCurNodeData();
 private:
     Tree::Node * rootNode;

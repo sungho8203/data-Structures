@@ -1,9 +1,13 @@
 #include "./include/ConsoleApp.h"
 
 ConsoleApp::ConsoleApp(){
-    cmdMap["exit"] = &ConsoleApp::exitCommand;
-    cmdMap["ls"] = &ConsoleApp::lsCommand;
-    cmdMap["cd"] = &ConsoleApp::cdCommand;
+    sCmdMap["exit"] = &ConsoleApp::exitCommand;    
+    sCmdMap["ls"] = &ConsoleApp::lsCommand;
+
+    sCmdMap["q"] = &ConsoleApp::exitCommand; //!!!!!!! 테스트할 때 편의를 위해서 사용(나중에 삭제)
+
+    mCmdMap["cd"] = &ConsoleApp::cdCommand;
+    mCmdMap["touch"] = &ConsoleApp::touchCommand;
 }
 
 ConsoleApp::~ConsoleApp(){
@@ -12,16 +16,23 @@ ConsoleApp::~ConsoleApp(){
 bool ConsoleApp::commandLine(){
     try{
         string cmdName;
-        while (1){
+        while (1)
+        {
             cin >> cmdName;
 
-            auto tempCmdMap = cmdMap.find(cmdName);
-            if (tempCmdMap != cmdMap.end())    
-                (this->*(cmdMap[cmdName]))();
+            auto sTempCmdMap = sCmdMap.find(cmdName);
+            auto mTempCmdMap = mCmdMap.find(cmdName);
+
+            if (sTempCmdMap != sCmdMap.end())
+            {
+                (this->*(sCmdMap[cmdName]))();
+                std::cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 입력버퍼 비우기
+            }
+            else if (mTempCmdMap != mCmdMap.end())
+                (this->*(mCmdMap[cmdName]))();
             else
                 cout << "Invalid Command" << endl;
 
-            std::cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 입력버퍼 비우기
         }
         return true;
     }
@@ -38,12 +49,19 @@ void ConsoleApp::exitCommand(){
 }
 
 void ConsoleApp::lsCommand(){
-    tree.showCurNodeData();
+    tree.showCurNodeChildNode();
 }
 
 void ConsoleApp::cdCommand(){
     string cmdContent;
     cin >> cmdContent;
-    cout << cmdContent << endl;
+    tree.changeCurNode(cmdContent);
+}
+
+void ConsoleApp::touchCommand(){
+    string cmdContent;
+    getline(cin, cmdContent);
+
+    tree.addCurNode(cmdContent);
 }
 #pragma endregion

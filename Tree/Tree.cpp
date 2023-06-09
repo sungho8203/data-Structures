@@ -87,7 +87,7 @@ bool Tree::deleteCurNode(){
     }
 }
 
-bool Tree::showCurNodeData(){
+bool Tree::showCurNodeChildNode(){
     try{
         if (curNode == nullptr)
             throw "Tree가 비어 있습니다.";
@@ -106,6 +106,11 @@ bool Tree::showCurNodeData(){
         cout << ex << endl;
         return false;
     }
+}
+
+// 현재 노드의 value를 제외한 data를 출력하는 함수 (미구현)
+bool Tree::showCurNodeData(){
+    return false;
 }
 
 #pragma region Protected
