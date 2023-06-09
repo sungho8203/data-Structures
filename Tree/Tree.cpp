@@ -7,6 +7,8 @@ Tree::Tree(){
 }
 
 Tree::~Tree(){
+    if (rootNode == nullptr)
+        return ;
     traversal(rootNode, &Tree::deleteNode);
 }
 
@@ -88,7 +90,8 @@ bool Tree::deleteCurNode(){
 bool Tree::showCurNodeData(){
     try{
         if (curNode == nullptr)
-            throw "노드가 없습니다.";
+            throw "Tree가 비어 있습니다.";
+
         cout << "현재 노드 : " << curNode->value << endl;
         cout << "  하위 노드";
 
@@ -155,11 +158,5 @@ Tree::Node * Tree::findValueAtParamNode(Tree::Node * curNode_local, string value
     }
     return resultNode;
 }
-
-#pragma endregion
-
-
-
- #pragma region ChildNodeList_Method
 
 #pragma endregion

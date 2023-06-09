@@ -1,22 +1,9 @@
-#include "./include/Tree.h"
-#include <string>
-#include <exception>
+#include "./include/ConsoleApp.h"
 
 int main(){
-    Tree temp;
+    ConsoleApp temp;
 
-    temp.addCurNode("fasdf");
-    temp.addCurNode("fasd");
-    temp.addCurNode("fasd1");
-    temp.showCurNodeData();
-    temp.deleteCurNode();
-    temp.addCurNode("fasdf");
-    temp.addCurNode("fasd");
-    temp.addCurNode("fasd1");
-    temp.changeCurNode("fasd1");
-    temp.showCurNodeData();
-    temp.addCurNode("fasdf");
-    temp.addCurNode("fasd");
-    temp.addCurNode("fasd1");
-    temp.showCurNodeData();
+    temp.commandLine();
+
+    return 0;
 }
