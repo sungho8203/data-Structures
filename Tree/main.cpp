@@ -10,5 +10,13 @@ int main(){
     temp.addCurNode("fasd1");
     temp.showCurNodeData();
     temp.deleteCurNode();
+    temp.addCurNode("fasdf");
+    temp.addCurNode("fasd");
+    temp.addCurNode("fasd1");
+    temp.changeCurNode("fasd1");
+    temp.showCurNodeData();
+    temp.addCurNode("fasdf");
+    temp.addCurNode("fasd");
+    temp.addCurNode("fasd1");
     temp.showCurNodeData();
 }

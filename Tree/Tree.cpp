@@ -7,7 +7,7 @@ Tree::Tree(){
 }
 
 Tree::~Tree(){
-
+    traversal(rootNode, &Tree::deleteNode);
 }
 
 bool Tree::addCurNode(string value){
@@ -23,7 +23,7 @@ bool Tree::addCurNode(string value){
             return true;
         }
 
-        if (findValueAtParamNode(curNode, value))
+        if (findValueAtParamNode(curNode, value) != nullptr)
             throw "현재 노드에 이미 있는 값입니다.";
 
         curNode->childNode.add(newNode);
@@ -44,6 +44,7 @@ bool Tree::addCurNode(string value){
 bool Tree::changeCurNode(string routeStr){
     try{
         vector<string> routeToken = this->split(routeStr, '/');
+
         Tree::Node * routeNode = curNode;
         int routeIndex = 0;
 
@@ -56,18 +57,15 @@ bool Tree::changeCurNode(string routeStr){
             Tree::Node * tempNode = routeNode;
             int i = 0;
             
-            if (tempNode == nullptr)
-                throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
-
-            if (!findValueAtParamNode(tempNode, routeToken[routeIndex]))
-                throw (routeToken[routeIndex] + " Node는 없습니다.").c_str();
+            if ((tempNode = findValueAtParamNode(tempNode, routeToken[routeIndex])) == nullptr)
+                throw (routeStr + "이 경로에서 \"" +routeToken[routeIndex] + "\" Node는 없습니다.");
 
             routeNode = tempNode;
         }
         curNode = routeNode;
         return true;
     }
-    catch(const char * ex){
+    catch(const string ex){
         cout << ex << endl;
         return false;
     }
@@ -111,7 +109,7 @@ bool Tree::showCurNodeData(){
 
 vector<string> Tree::split(string str, char delimiter){
     vector<string> resultSplit;
-    stringstream strStream;
+    stringstream strStream(str);
     string splitTemp;
 
     while(getline(strStream, splitTemp, delimiter))
@@ -145,14 +143,17 @@ bool Tree::traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)){
 
     return (this->*opFunc)(nextNode);
 }
-bool Tree::findValueAtParamNode(Tree::Node * curNode_local, string value){
+Tree::Node * Tree::findValueAtParamNode(Tree::Node * curNode_local, string value){
+    Tree::Node * resultNode = nullptr, * tempNode;
     curNode_local->childNode.initCurNode(); // Parameter로 들어온 Tree Node의 childNode 요소(List)의 initCurNode메소드를 실행
 
     for(int i = 0; i < curNode_local->childNode.getSize(); i++){
-        if (curNode_local->childNode.nextCurNode()->value == value)
-            return true;
+        if ((tempNode = curNode_local->childNode.nextCurNode())->value == value){
+            resultNode = tempNode;
+            break;
+        }
     }
-    return false;
+    return resultNode;
 }
 
 #pragma endregion

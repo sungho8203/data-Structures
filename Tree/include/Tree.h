@@ -44,7 +44,7 @@ protected:
     vector<string> split(string str, char delimiter);
     bool deleteNode(Tree::Node * operands);
     bool traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *));
-    bool findValueAtParamNode(Tree::Node * curNode_local, string value);
+    Tree::Node * findValueAtParamNode(Tree::Node * curNode_local, string value);
 };
 
 
@@ -59,7 +59,7 @@ public :
 
     void initCurNode(){
         curIndexNode = List<Tree::Node *>::firstNode;
-        }
+    }
 
     Tree::Node * nextCurNode(){
         List<Tree::Node *>::Node * tempNode;
