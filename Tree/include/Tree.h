@@ -25,24 +25,26 @@ public:
 class Tree{
 public :
     struct Node;
+    Tree::Node * curNode;
 
     Tree();
     ~Tree();
 
-    bool addCurNode(string value);
+    static vector<string> split(string str, char delimiter); // 문자열 split
 
-    bool changeCurNode(string routeStr);
+    bool addNode(Tree::Node * targetNode, string value);
 
-    bool deleteCurNode();
+    Tree::Node * searchNode(string routeStr);
 
-    bool showCurNodeChildNode();
-    bool showCurNodeData();
+    bool delNode(Tree::Node * targetNode);
+
+    bool showChildNode(Tree::Node * targetNode);
+
+    bool showNodeData();
 private:
     Tree::Node * rootNode;
-    Tree::Node * curNode;
 
 protected:
-    vector<string> split(string str, char delimiter);
     bool deleteNode(Tree::Node * operands);
     bool traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *));
     Tree::Node * findValueAtParamNode(Tree::Node * curNode_local, string value);

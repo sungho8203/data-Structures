@@ -12,10 +12,9 @@ public:
 private:
     Tree tree;
 
-    unordered_map<string, void(ConsoleApp::*)()> sCmdMap; // 명령어만 있으면 되는 명령어
-    unordered_map<string, void(ConsoleApp::*)()> mCmdMap; // 부가적인 정보가 필요한 명령어
-    void exitCommand();
-    void lsCommand();
-    void cdCommand();
-    void touchCommand();
+    unordered_map<string, void(ConsoleApp::*)(string)> cmdMap; // 명령어만 있으면 되는 명령어
+    void exitCommand(string cmdData);
+    void lsCommand(string cmdData);
+    void cdCommand(string cmdData);
+    void touchCommand(string cmdData);
 };
