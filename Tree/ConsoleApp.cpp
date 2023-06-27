@@ -4,8 +4,6 @@ ConsoleApp::ConsoleApp(){
     cmdMap["exit"] = &ConsoleApp::exitCommand;    
     cmdMap["ls"] = &ConsoleApp::lsCommand;
 
-    cmdMap["q"] = &ConsoleApp::exitCommand; //!!!!!!! 테스트할 때 편의를 위해서 사용(나중에 삭제)
-
     cmdMap["cd"] = &ConsoleApp::cdCommand;
     cmdMap["touch"] = &ConsoleApp::touchCommand;
 }
@@ -48,7 +46,11 @@ void ConsoleApp::exitCommand(vector<string> cmdToken){
 }
 
 void ConsoleApp::lsCommand(vector<string> cmdToken){
-    tree.showChildNode();
+
+    if (cmdToken.size() == 0)
+        tree.showChildNode();
+    else if (cmdToken.size() == 1)
+        tree.showChildNode(tree.searchNode(cmdToken[0]));
 }
 
 void ConsoleApp::cdCommand(vector<string> cmdToken){
