@@ -13,7 +13,7 @@ ConsoleApp::ConsoleApp(){
 ConsoleApp::~ConsoleApp(){
 }
 
-bool ConsoleApp::commandLine(){
+void ConsoleApp::commandLine(){
     try{
         string cmdName, cmdData;
         while (1)
@@ -25,52 +25,46 @@ bool ConsoleApp::commandLine(){
 
             if (tempCmdMap != cmdMap.end()){
                 cmdData.erase(0,1);
-                (this->*(cmdMap[cmdName]))(cmdData);
+                vector<string> cmdToken = Tree::split(cmdData, ' ');
+                (this->*(cmdMap[cmdName]))(cmdToken);
             }
             else
                 cout << "Invalid Command" << endl;
 
+            putchar('\n');
         }
-        return true;
+        return ;
     }
     catch(const char * ex){
         cout << ex << endl;
-        return false;
+        return ;
     }
 }
 
 #pragma region ConsoleApp_Command_Method
 
-void ConsoleApp::exitCommand(string cmdData){
+void ConsoleApp::exitCommand(vector<string> cmdToken){
     throw "Exit Application";
 }
 
-void ConsoleApp::lsCommand(string cmdData){
-    tree.showChildNode(tree.curNode);
+void ConsoleApp::lsCommand(vector<string> cmdToken){
+    tree.showChildNode();
 }
 
-void ConsoleApp::cdCommand(string cmdData){
-    vector<string> cmdToken = Tree::split(cmdData, ' ');
-    Tree::Node * targetNode = tree.searchNode(cmdToken[0]);
-
-    if (targetNode != nullptr)
-        tree.curNode = targetNode;
-}
-
-void ConsoleApp::touchCommand(string cmdData){
-    vector<string> cmdToken = Tree::split(cmdData, ' ');
-    Tree::Node * targetNode = tree.curNode;
-
-    if(cmdToken.size() == 2)
-        if ((targetNode = tree.searchNode(cmdToken[0])) == nullptr)
-            throw "Invalid Argument";
+void ConsoleApp::cdCommand(vector<string> cmdToken){
     
-    if (cmdToken.size() == 2){
-        Tree::Node * tempTargetNode = nullptr;
+    if (cmdToken.size() == 1)
+        tree.changeCurNode(cmdToken[0]);
+    else
+        cout << "Invalid Argument" << endl;
+}
 
-        if ((tempTargetNode = tree.searchNode(cmdToken[0])) != nullptr)
-            tree.addNode(tempTargetNode, cmdToken[1]);
-    }
+void ConsoleApp::touchCommand(vector<string> cmdToken){
+
+    if(cmdToken.size() == 1)
+        tree.addNode(cmdToken[0]);
+    else if (cmdToken.size() == 2)
+        tree.addNode(tree.searchNode(cmdToken[0]), cmdToken[1]);
     else
         cout << "Invalid Argument" << endl;
 }

@@ -25,23 +25,27 @@ public:
 class Tree{
 public :
     struct Node;
-    Tree::Node * curNode;
 
     Tree();
     ~Tree();
 
     static vector<string> split(string str, char delimiter); // 문자열 split
 
+    bool addNode(string value);
     bool addNode(Tree::Node * targetNode, string value);
 
+    bool changeCurNode(string routeStr);
     Tree::Node * searchNode(string routeStr);
 
+    bool delNode();
     bool delNode(Tree::Node * targetNode);
 
+    bool showChildNode();
     bool showChildNode(Tree::Node * targetNode);
 
     bool showNodeData();
 private:
+    Tree::Node * curNode;
     Tree::Node * rootNode;
 
 protected:

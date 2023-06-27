@@ -8,13 +8,13 @@ public:
     ConsoleApp();
     ~ConsoleApp();
 
-    bool commandLine();
+    void commandLine();
 private:
     Tree tree;
 
-    unordered_map<string, void(ConsoleApp::*)(string)> cmdMap; // 명령어만 있으면 되는 명령어
-    void exitCommand(string cmdData);
-    void lsCommand(string cmdData);
-    void cdCommand(string cmdData);
-    void touchCommand(string cmdData);
+    unordered_map<string, void(ConsoleApp::*)(vector<string>)> cmdMap; // 명령어만 있으면 되는 명령어
+    void exitCommand(vector<string> cmdToken);
+    void lsCommand(vector<string> cmdToken);
+    void cdCommand(vector<string> cmdToken);
+    void touchCommand(vector<string> cmdToken);
 };

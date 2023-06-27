@@ -23,6 +23,10 @@ vector<string> Tree::split(string str, char delimiter){
     return resultSplit;
 }
 
+bool Tree::addNode(string value){
+    return this->addNode(curNode, value);
+}
+
 bool Tree::addNode(Tree::Node * targetNode, string value){
     Tree::Node * newNode;
     try{
@@ -56,6 +60,16 @@ bool Tree::addNode(Tree::Node * targetNode, string value){
     }
 }
 
+bool Tree::changeCurNode(string routeStr){
+    Tree::Node * targetNode = this->searchNode(routeStr);
+
+    if (targetNode == nullptr)
+        return false;
+    
+    this->curNode = targetNode;
+    return true;
+}
+
 Tree::Node * Tree::searchNode(string routeStr){
     try{
         vector<string> routeToken = Tree::split(routeStr, '/');
@@ -85,6 +99,10 @@ Tree::Node * Tree::searchNode(string routeStr){
     }
 }
 
+bool Tree::delNode(){
+    return this->delNode(curNode);
+}
+
 bool Tree::delNode(Tree::Node * targetNode){
     try{
         traversal(targetNode, &Tree::deleteNode);
@@ -97,6 +115,10 @@ bool Tree::delNode(Tree::Node * targetNode){
     catch(exception ex){
         return false;
     }
+}
+
+bool Tree::showChildNode(){
+    return this->showChildNode(curNode);
 }
 
 bool Tree::showChildNode(Tree::Node * targetNode){
