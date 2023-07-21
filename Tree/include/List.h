@@ -6,16 +6,25 @@ using namespace std;
 
 template<typename TYPE>
 class List{
-public:
-
+private:
     struct Node{
         TYPE content;
         Node * nextNode;
     };
 
+    Node ** lastNode;
+    Node * firstNode;
+
+    Node * curIndexNode; // typename 키워드를 사용해서 Node가 변수가 아닌 형식임을 알려준다.
+
+    int size;
+
+public:
+
     List() : firstNode(nullptr){
         lastNode = &firstNode;
         size = 0;
+        curIndexNode = firstNode;
     }
     ~List(){
         clear();
@@ -93,10 +102,41 @@ public:
         return size;
     }
 
-protected:
-    Node ** lastNode;
-    Node * firstNode;
 
-private:
-    int size;
+    bool emptyList(){
+        if (firstNode == nullptr)
+            return true;
+        else {
+            return false;
+        }
+    }
+
+#pragma region FOR_ALL_DATA_REFERENCE
+    // List의 증가연산를 사용할 때 초기화를 해줘야 한다.
+    bool setNextCurNode(){
+        curIndexNode = firstNode;
+        return !emptyList();
+    }
+
+    TYPE nextCurNode(){
+        Node * tempNode;
+
+        if (firstNode == nullptr)
+            return nullptr;
+
+        if(curIndexNode == nullptr)
+            curIndexNode = firstNode;      
+        tempNode = curIndexNode;
+
+        curIndexNode = curIndexNode->nextNode;
+
+        return tempNode->content;
+    }
+    TYPE operator++(){
+        return nextCurNode();
+    }
+    TYPE operator++(int){
+        return nextCurNode();
+    }
+#pragma endregion
 };

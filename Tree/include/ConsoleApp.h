@@ -3,6 +3,8 @@
 #include "./Tree.h"
 #include <string>
 
+#define INVALD_COMMAND "Invalid Argument"
+
 class ConsoleApp{
 public:
     ConsoleApp();
@@ -17,4 +19,5 @@ private:
     void lsCommand(vector<string> cmdToken);
     void cdCommand(vector<string> cmdToken);
     void touchCommand(vector<string> cmdToken);
+    void rmCommand(vector<string> cmdToken);
 };

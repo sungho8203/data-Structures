@@ -35,10 +35,12 @@ bool Tree::addNode(Tree::Node * targetNode, string value){
         if (value == "")
             throw "데이터가 비어있습니다.";
         newNode->value = value;
+        newNode->parentNode = targetNode;
 
         if (rootNode == nullptr){
             rootNode = newNode;
             curNode = rootNode;
+            newNode->parentNode = rootNode;
             return true;
         }
 
@@ -72,6 +74,11 @@ bool Tree::changeCurNode(string routeStr){
 
 Tree::Node * Tree::searchNode(string routeStr){
     try{
+        if (curNode == nullptr){
+            curNode = rootNode;
+            throw (string)"현재 노드가 비어있습니다.rootNode로 이동합니다.";
+        }
+
         vector<string> routeToken = Tree::split(routeStr, '/');
 
         Tree::Node * routeNode = curNode;
@@ -86,7 +93,7 @@ Tree::Node * Tree::searchNode(string routeStr){
             Tree::Node * tempNode = routeNode;
             
             if ((tempNode = findValueAtParamNode(tempNode, routeToken[routeIndex])) == nullptr)
-                throw (routeStr + " 경로에서 \"" +routeToken[routeIndex] + "\" Node는 없습니다.");
+                throw string(routeStr + " 경로에서 \"" +routeToken[routeIndex] + "\" Node는 없습니다.");
 
             routeNode = tempNode;
         }
@@ -99,12 +106,17 @@ Tree::Node * Tree::searchNode(string routeStr){
     }
 }
 
-bool Tree::delNode(){
-    return this->delNode(curNode);
+bool Tree::delNode(string nodeValue){
+    return this->delNode(curNode, nodeValue);
 }
 
-bool Tree::delNode(Tree::Node * targetNode){
+bool Tree::delNode(Tree::Node * routeNode, string nodeValue){
     try{
+        Tree::Node * targetNode = findValueAtParamNode(routeNode, nodeValue);
+        if (targetNode == nullptr)
+            throw (nodeValue + "Node를 찾을 수 없습니다.");
+
+        targetNode->parentNode->childNode.remove(targetNode);
         traversal(targetNode, &Tree::deleteNode);
 
         if (targetNode == rootNode)
@@ -112,27 +124,38 @@ bool Tree::delNode(Tree::Node * targetNode){
 
         return true;
     }
+    catch(string ex){
+        cout << ex << endl;
+        return false;
+    }
     catch(exception ex){
         return false;
     }
 }
 
 bool Tree::showChildNode(){
+    if (curNode == nullptr){
+        curNode = rootNode;
+        cout << "Tree가 비어 있습니다." << endl;
+        return false;
+    }
     return this->showChildNode(curNode);
 }
 
 bool Tree::showChildNode(Tree::Node * targetNode){
     try{
         if (targetNode == nullptr)
-            throw "Tree가 비어 있습니다.";
-
+            return false;
         cout << "현재 노드 : " << targetNode->value << endl;
         cout << "  하위 노드";
 
-        targetNode->childNode.initCurNode();
-        for (int i = 0; i < targetNode->childNode.getSize(); i++)
-            cout << " - " << targetNode->childNode.nextCurNode()->value;
-        cout << "\n  갯수는    = " << targetNode->childNode.getSize() << "\n\n";
+        if (targetNode->childNode.setNextCurNode()){
+            for (int i = 0; i < targetNode->childNode.getSize(); i++)
+                cout << " - " << (targetNode->childNode++)->value;
+            cout << "\n  갯수는    = " << targetNode->childNode.getSize() << "\n\n";
+        }
+        else
+            cout << "가 없습니다." << endl;
 
         return true;
     }
@@ -160,13 +183,12 @@ bool Tree::deleteNode(Tree::Node * operand){
 }
 
 bool Tree::traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)){
-    if(!nextNode->childNode.getSize())
+    // List가 비어있으면
+    if(!nextNode->childNode.getSize() || !nextNode->childNode.setNextCurNode())
         return (this->*opFunc)(nextNode);
 
-    nextNode->childNode.initCurNode();
-
     for(int i = 0; i < nextNode->childNode.getSize(); i++){
-        traversal(nextNode->childNode.nextCurNode(), opFunc);
+        traversal(nextNode->childNode++, opFunc);
     }
 
     if (opFunc == &Tree::deleteNode)
@@ -174,12 +196,16 @@ bool Tree::traversal(Tree::Node * nextNode, bool (Tree::*opFunc)(Tree::Node *)){
 
     return (this->*opFunc)(nextNode);
 }
+
 Tree::Node * Tree::findValueAtParamNode(Tree::Node * curNode_local, string value){
     Tree::Node * resultNode = nullptr, * tempNode;
-    curNode_local->childNode.initCurNode(); // Parameter로 들어온 Tree Node의 childNode 요소(List)의 initCurNode메소드를 실행
+
+    // Parameter로 들어온 Tree Node의 childNode 요소(List)의 순환을 위해 setting하는 코드 (List가 비었으면 nullptr return)
+    if (!curNode_local->childNode.setNextCurNode())
+        return nullptr;
 
     for(int i = 0; i < curNode_local->childNode.getSize(); i++){
-        if ((tempNode = curNode_local->childNode.nextCurNode())->value == value){
+        if ((tempNode = curNode_local->childNode++)->value == value){
             resultNode = tempNode;
             break;
         }
