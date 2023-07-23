@@ -122,7 +122,6 @@ public:
         return size;
     }
 
-
     bool emptyList(){
         if (firstNode == nullptr)
             return true;
@@ -152,6 +151,10 @@ public:
         curIndexNode = curIndexNode->nextNode;
 
         return tempNode->content;
+    }
+
+    TYPE returnCurNode(){
+        return curIndexNode;
     }
 
     TYPE operator++(){

@@ -6,22 +6,21 @@
 using namespace std;
 
 
+
 class Graph{
 public:
-    // 데이터
-    struct Data{
-        string title;
-        // 데이터 추가
-    };
-
-    struct Vertex;
-
     struct Vertex{
-        List<Graph::Vertex *> edgs; // vertex와 연결된(?) 간선들의 List
-        Data data;
-    };
+    public:
+        List<Vertex **> edgs; // vertex와 연결된(?) 간선들의 List
 
-    List<Graph::Vertex *> vertexList; // vertex의 간선들
+        struct Data{
+            string title;
+            // 데이터 추가
+        }data;
+    };
+    
+    List<Vertex *> vertexList;
+    List<Vertex **> incidenceList; 
 
     // Method
 
@@ -29,10 +28,13 @@ public:
     ~Graph();
 
     bool addVertex(string title);
-    bool addEdgs(string target);
+    bool addEdgs(string target1, string target2);
 
-    bool searchVertex(string title);
+    Graph::Vertex * searchVertex(string title);
+
+    bool delVertex(string title);
+    bool delEdgs(string target1, string target2);
 
 private:
-    Graph::Vertex * curVertex;
+    Vertex * curVertex;
 };
