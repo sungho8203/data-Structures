@@ -4,9 +4,28 @@
 
 using namespace std;
 
+
+class ListException : exception{
+private :
+    unsigned int errorCode;
+
+public :
+    enum ErrorCode{
+        e_EMPTY = 1
+    };
+
+    ListException(unsigned int code){
+        errorCode = code;
+    }
+
+    unsigned int getErrorCode(){
+        return errorCode;
+    }
+};
+
 template<typename TYPE>
 class List{
-private:
+protected:
     struct Node{
         TYPE content;
         Node * nextNode;
@@ -15,7 +34,7 @@ private:
     Node ** lastNode;
     Node * firstNode;
 
-    Node * curIndexNode; // typename 키워드를 사용해서 Node가 변수가 아닌 형식임을 알려준다.
+    Node * curIndexNode;    // typename 키워드를 사용해서 Node가 변수가 아닌 형식임을 알려준다.
 
     int size;
 
@@ -26,6 +45,7 @@ public:
         size = 0;
         curIndexNode = firstNode;
     }
+
     ~List(){
         clear();
     }
@@ -111,8 +131,9 @@ public:
         }
     }
 
-#pragma region FOR_ALL_DATA_REFERENCE
+#pragma region METHOD_IS_FOR_TRAVERSAL
     // List의 증가연산를 사용할 때 초기화를 해줘야 한다.
+    // return : 빈 List면 False, 요소가 있으면 True
     bool setNextCurNode(){
         curIndexNode = firstNode;
         return !emptyList();
@@ -122,8 +143,8 @@ public:
         Node * tempNode;
 
         if (firstNode == nullptr)
-            return nullptr;
-
+            throw ListException(ListException::e_EMPTY);
+        
         if(curIndexNode == nullptr)
             curIndexNode = firstNode;      
         tempNode = curIndexNode;
@@ -132,6 +153,7 @@ public:
 
         return tempNode->content;
     }
+
     TYPE operator++(){
         return nextCurNode();
     }
