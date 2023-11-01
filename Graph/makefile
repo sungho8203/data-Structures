@@ -1,9 +1,9 @@
-SRC = $(shell find . -name '*.cpp' ! -name 'temp*.cpp')
+SRC = $(shell find . -name '*.c' ! -name 'temp*.c')
 HEAD = ./include
+SRC_O = $(shell find . -name '*.o' ! -name 'temp*.c')
+TEMP_SRC = $(shell find . -name 'temp*.c')
 
-TEMP_SRC = $(shell find . -name 'temp*.cpp')
-
-CC = g++ -std=c++11 -g
+CC = gcc -g
 
 all : main
 
@@ -13,9 +13,11 @@ main : main_cc
 mdb : main_cc
 	lldb ./main.out
 
-main_cc:
-	$(CC) $(SRC) -o main.out -I $(HEAD)
+main_cc: main.o
+	$(CC) $(SRC_O) -o main.out -I $(HEAD)
 
+main.o: $(SRC)
+	$(CC) -c $^
 
 
 temp : temp_cc
