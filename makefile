@@ -1,6 +1,6 @@
 SRC = $(shell find . -name '*.c' ! -name 'temp*.c')
 HEAD = ./include
-SRC_O = $(shell find . -name '*.o' ! -name 'temp*.c')
+SRC_O = $(shell find . -name '*.o' ! -name 'temp*.o')
 TEMP_SRC = $(shell find . -name 'temp*.c')
 
 CC = gcc -g
