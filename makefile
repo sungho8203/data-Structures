@@ -13,11 +13,11 @@ main : main_cc
 mdb : main_cc
 	lldb ./main.out
 
-main_cc: main.o
+main_cc: $(SRC_O)
 	$(CC) $(SRC_O) -o main.out -I $(HEAD)
 
-main.o: $(SRC)
-	$(CC) -c $^
+%.o: %.c
+	$(CC) -c $<
 
 
 temp : temp_cc
