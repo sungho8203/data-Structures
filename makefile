@@ -1,6 +1,6 @@
 SRC = $(shell find . -name '*.c' ! -name 'temp*.c')
 HEAD = ./include
-SRC_O = $(shell find . -name '*.o' ! -name 'temp*.o')
+SRC_O = $(SRC:.c=.o)
 TEMP_SRC = $(shell find . -name 'temp*.c')
 
 CC = gcc -g
@@ -14,7 +14,7 @@ mdb : main_cc
 	lldb ./main.out
 
 main_cc: $(SRC_O)
-	$(CC) $(SRC_O) -o main.out -I $(HEAD)
+	$(CC) $^ -o main.out -I $(HEAD)
 
 %.o: %.c
 	$(CC) -c $<
